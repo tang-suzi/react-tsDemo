@@ -25,9 +25,9 @@ const App: React.FC = () => {
   const outlet = useRoutes(router);
   return (
     <div className="App">
-      <Link to="/home">home</Link> |
+      {/* <Link to="/home">home</Link> |
       <Link to="/about">about</Link> |
-      <Link to="/user">user</Link>
+      <Link to="/user">user</Link> */}
       {outlet}
     </div>
   );
