@@ -1,6 +1,7 @@
 import { Navigate } from "react-router-dom";
 import React, { lazy } from "react";
 // import About from "@/views/About";
+import Login from "@/views/Login";
 import Home from "@/views/Home";
 // const Home = lazy(() => import("@/views/Home"));
 // const User = lazy(() => import("@/views/User"));
@@ -60,6 +61,11 @@ const routes = [
         element: withLoadingComponent(<Page404 />),
       },
     ],
+  },
+  {
+    path: "/login",
+    // 404
+    element: <Login />,
   },
   {
     path: "*",
