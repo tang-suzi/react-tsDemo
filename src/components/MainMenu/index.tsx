@@ -75,22 +75,39 @@ const items: MenuItem[] = [
 ];
 
 const MainMenu = () => {
-  const location = useLocation()
-  const [stateOpenKeys, setStateOpenKeys] = useState(["page3"]);
+  const location = useLocation();
   const navgateTo = useNavigate();
+  let firstOpenKey: string = "";
+  const findKey = (obj: { key: string }) => {
+    return obj.key === location.pathname;
+  };
+  for (let i = 0; i < items.length; i++) {
+    if (
+      items[i]!["children"] &&
+      items[i]!["children"].length &&
+      items[i]!["children"].find(findKey)
+    ) {
+      firstOpenKey = items[i]!.key as string;
+      break;
+    }
+  }
+  const [stateOpenKeys, setStateOpenKeys] = useState([firstOpenKey]);
   // const outlet = useRoutes(routes);
   const menuClick = (e: { key: string }) => {
+    console.log(e);
     // console.log(e.key);
     // 编程式路由跳转 用到hook useNavigate
     navgateTo(e.key);
   };
   const onOpenChange: MenuProps["onOpenChange"] = (openKeys: string[]) => {
     // openKeys记录了是哪一项展开的
+    console.log(openKeys);
+
     setStateOpenKeys([openKeys[openKeys.length - 1]]);
   };
   useEffect(() => {
-    console.log(location)
-  }, [])
+    // console.log(location);
+  }, []);
   return (
     <Menu
       theme="dark"
