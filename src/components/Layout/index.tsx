@@ -28,10 +28,10 @@ const View: React.FC = () => {
           style={{ padding: "0 0 0 16px" }}
         >
           {/* 面包屑 */}
-          <Breadcrumb style={{ lineHeight: "64px" }}>
-            <Breadcrumb.Item>User</Breadcrumb.Item>
-            <Breadcrumb.Item>Bill</Breadcrumb.Item>
-          </Breadcrumb>
+          <Breadcrumb
+            style={{ lineHeight: "64px" }}
+            items={[{ title: "User" }, { title: "Bill" }]}
+          />
         </Header>
         {/* 右边内容 */}
         <Content

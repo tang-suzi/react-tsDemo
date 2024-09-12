@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Menu } from "antd";
 import {
   DesktopOutlined,
@@ -12,41 +12,75 @@ import type { MenuProps } from "antd";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
-function getItem(
-  label: React.ReactNode,
-  key: React.Key,
-  icon?: React.ReactNode,
-  children?: MenuItem[]
-): MenuItem {
-  return {
-    key,
-    icon,
-    children,
-    label,
-  } as MenuItem;
-}
+// function getItem(
+//   label: React.ReactNode,
+//   key: React.Key,
+//   icon?: React.ReactNode,
+//   children?: MenuItem[]
+// ): MenuItem {
+//   return {
+//     label,
+//     key,
+//     icon,
+//     children,
+//   } as MenuItem;
+// }
 
 const items: MenuItem[] = [
-  getItem("Option 1", "/page1", <PieChartOutlined />),
-  getItem("Option 2", "/page2", <DesktopOutlined />),
-  getItem("User", "page3", <UserOutlined />, [
-    getItem("Tom", "/home"),
-    getItem("Bill", "/about"),
-    getItem("Alex", "5"),
-  ]),
-  getItem("Team", "page4", <TeamOutlined />, [
-    getItem("Team 1", "6"),
-    getItem("Team 2", "8"),
-  ]),
-  getItem("Files", "9", <FileOutlined />),
+  //   getItem("Option 1", "/page1", <PieChartOutlined />),
+  //   getItem("Option 2", "/page2", <DesktopOutlined />),
+  //   getItem("User", "page3", <UserOutlined />, [
+  //     getItem("Tom", "/home"),
+  //     getItem("Bill", "/about"),
+  //     getItem("Alex", "5"),
+  //   ]),
+  //   getItem("Team", "page4", <TeamOutlined />, [
+  //     getItem("Team 1", "6"),
+  //     getItem("Team 2", "8"),
+  //   ]),
+  //   getItem("Files", "9", <FileOutlined />),
+  {
+    key: "/page1",
+    icon: <PieChartOutlined />,
+    label: "Option 1",
+  },
+  {
+    key: "/page2",
+    icon: <UserOutlined />,
+    label: "Option 2",
+  },
+  {
+    key: "/page3",
+    icon: <TeamOutlined />,
+    label: "Option 3",
+    children: [
+      { key: "/page3/page301", label: "Option 3-1" },
+      { key: "/page3/page302", label: "Option 3-2" },
+    ],
+  },
+  {
+    key: "/page4",
+    icon: <FileOutlined />,
+    label: "Option 4",
+    children: [
+      { key: "/page4/page401", label: "Option 4-1" },
+      { key: "/page4/page402", label: "Option 4-2" },
+    ],
+  },
+  {
+    key: "/page5",
+    icon: <DesktopOutlined />,
+    label: "Option 5",
+  },
 ];
 
 const MainMenu = () => {
+  const location = useLocation()
   const [stateOpenKeys, setStateOpenKeys] = useState(["page3"]);
   const navgateTo = useNavigate();
   // const outlet = useRoutes(routes);
   const menuClick = (e: { key: string }) => {
-    console.log(e.key);
+    // console.log(e.key);
     // 编程式路由跳转 用到hook useNavigate
     navgateTo(e.key);
   };
@@ -54,10 +88,13 @@ const MainMenu = () => {
     // openKeys记录了是哪一项展开的
     setStateOpenKeys([openKeys[openKeys.length - 1]]);
   };
+  useEffect(() => {
+    console.log(location)
+  }, [])
   return (
     <Menu
       theme="dark"
-      defaultSelectedKeys={["/page1"]}
+      defaultSelectedKeys={[location.pathname]}
       mode="inline"
       items={items}
       onOpenChange={onOpenChange}
