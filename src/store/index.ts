@@ -1,4 +1,10 @@
-import { combineReducers, legacy_createStore as createStore } from "redux";
+import {
+  applyMiddleware,
+  combineReducers,
+  legacy_createStore as createStore,
+} from "redux";
+import { thunk } from "redux-thunk";
+
 // import reducer from "./reducer";
 import numReducer from "./numReducer/reducer";
 import arrReducer from "./arrReducer/reducer";
@@ -7,5 +13,7 @@ const reducers = combineReducers({
   arrReducer,
 });
 
+
 // export default createStore(reducer);
-export default createStore(reducers);
+// redux-thunk
+export default createStore(reducers, applyMiddleware(thunk));

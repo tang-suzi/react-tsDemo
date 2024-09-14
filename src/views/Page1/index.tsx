@@ -1,5 +1,6 @@
 import { Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
+import numReducer from "@/store/numReducer";
 
 const Page1: React.FC = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,16 @@ const Page1: React.FC = () => {
   const add = () => {
     dispatch({ type: "ADD" });
   };
+  const asyncAdd = () => {
+    // dispatch((dis: Function) => {
+    //   setTimeout(() => {
+    //     dis({ type: "ASYNC_ADD" });
+    //   }, 1000);
+    // });
+    // thunk写法
+    console.log(numReducer)
+    dispatch(numReducer.asyncActions.asyncAdd)
+  };
   const add2 = (value: number) => {
     dispatch({ type: "ADD2", value });
   };
@@ -27,6 +38,7 @@ const Page1: React.FC = () => {
     <div>
       {num}
       <Button onClick={add}>add</Button>
+      <Button onClick={asyncAdd}>异步add</Button>
       <Button onClick={() => add2(2)}>add2</Button>
       <Button onClick={() => pushArr(2)}>pushArr</Button>
     </div>

@@ -7,12 +7,23 @@ const actions: {
   ADD: (newState) => {
     newState.num++;
   },
+  //   ASYNC_ADD: (newState) => {
+  //     newState.num++;
+  //   },
   ADD2: (newState, action) => {
     newState.num += action.value;
+  },
+};
+const asyncActions = {
+  asyncAdd(dis: Function) {
+    setTimeout(() => {
+      dis({ type: "ADD" });
+    }, 1000);
   },
 };
 
 export default {
   state: { num: 20 },
-  actions
+  actions,
+  asyncActions,
 };
