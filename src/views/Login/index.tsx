@@ -3,6 +3,7 @@ import styles from "./index.module.scss";
 import initLoginBg from "./init";
 import { Button, Input, Space } from "antd";
 import "./index.less";
+import { captchaAPI } from "@/request/api";
 const Login = () => {
   const [captchaImg] = useState("");
   const [username, setUsername] = useState("");
@@ -17,11 +18,15 @@ const Login = () => {
   const onCaptchaChange = (e: ChangeEvent<HTMLInputElement>) => {
     setCaptcha(e.target.value);
   };
-  const getCaptchaImg = () => {};
+  const getCaptchaImg = async () => {
+    const res = await captchaAPI();
+    console.log(res);
+  };
   const onSubmitLogin = () => {
     console.log(username, password, captcha);
   };
   useEffect(() => {
+    getCaptchaImg()
     initLoginBg();
     window.onreset = () => initLoginBg();
   }, []);
