@@ -1,15 +1,22 @@
-import Mock from "mockjs";
+import { Random } from "mockjs";
 
-const list = [];
-const captchaTemplate = Mock.Random.string("number", 4);
+// const list = [];
+// const captchaTemplate = Random.string("number", 4);
 export default {
   captchaAPI: () => {
     return {
       code: 20000,
       msg: "操作成功",
-      img: captchaTemplate,
+      img: Random.dataImage(),
       captchaEnabled: true,
-      uuid: Mock.Random.guid(),
+      uuid: Random.guid(),
+    };
+  },
+  loginAPI: () => {
+    return {
+      code: 20000,
+      msg: "操作成功",
+      token: Random.guid(),
     };
   },
 };

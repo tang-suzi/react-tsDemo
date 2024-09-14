@@ -1,14 +1,16 @@
 import { useEffect, useState, ChangeEvent } from "react";
 import styles from "./index.module.scss";
 import initLoginBg from "./init";
-import { Button, Input, Space } from "antd";
+import { Button, Input, message, Space } from "antd";
 import "./index.less";
-import { captchaAPI } from "@/request/api";
+import { captchaAPI, loginAPI } from "@/request/api";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
-  const [captchaImg] = useState("");
+  const [captchaImg, setCaptchaImg] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [captcha, setCaptcha] = useState("");
+  const navgate = useNavigate();
   const onUsernameChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
   };
@@ -19,14 +21,41 @@ const Login = () => {
     setCaptcha(e.target.value);
   };
   const getCaptchaImg = async () => {
-    const res = await captchaAPI();
-    console.log(res);
+    try {
+      const { code, img, uuid } = await captchaAPI();
+      if (code === 20000) {
+        setCaptchaImg(img);
+        localStorage.setItem("uuid", uuid);
+      }
+    } catch (error) {
+      throw new Error(error);
+    }
   };
-  const onSubmitLogin = () => {
-    console.log(username, password, captcha);
+  const onSubmitLogin = async () => {
+    if (!username || !password || !captcha) {
+      message.error("请输入完整信息");
+      return;
+    }
+    const params = {
+      username,
+      password,
+      code: captcha,
+      uuid: localStorage.getItem("uuid"),
+    };
+    try {
+      const { code, msg, token } = await loginAPI(params);
+      if (code === 20000) {
+        message.success(msg);
+        localStorage.setItem("ccc-token", token);
+        localStorage.removeItem("uuid");
+        navgate("/");
+      }
+    } catch (error) {
+      throw message.error(error);
+    }
   };
   useEffect(() => {
-    getCaptchaImg()
+    getCaptchaImg();
     initLoginBg();
     window.onreset = () => initLoginBg();
   }, []);
@@ -51,7 +80,7 @@ const Login = () => {
             <div className="captchaBox">
               <Input placeholder="验证码" onChange={onCaptchaChange} />
               <div className="captchaImg" onClick={getCaptchaImg}>
-                <img height={"30px"} src={captchaImg} alt="" />
+                <img height={"30px"} width={"100px"} src={captchaImg} alt="" />
               </div>
             </div>
             <Button
